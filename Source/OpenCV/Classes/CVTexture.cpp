@@ -6,7 +6,6 @@
 UCVTexture::UCVTexture()
 {
 	// default texture
-
 	myTexture2D = UTexture2D::CreateTransient(8, 8);
 }
 
@@ -50,12 +49,15 @@ void UCVTexture::DataFromCVMat(UCVMat * CVMatIn)
 
 void UCVTexture::UpdateTexture()
 {
-	if (myTexture2D && myUpdateTextureRegion2D)
+	if (
+		myTexture2D &&
+		myUpdateTextureRegion2D &&
+		((uint32)Data.Num() >= myUpdateTextureRegion2D->Width * myUpdateTextureRegion2D->Height)
+		)
 	{
 		UpdateTextureRegions(myTexture2D, (int32)0, (uint32)3, myUpdateTextureRegion2D, (uint32)(4 * myUpdateTextureRegion2D->Width), (uint32)4, (uint8 *)Data.GetData(), false);
 	}
 }
-
 
 UTexture2D * UCVTexture::GetTexture2D()
 {
@@ -115,9 +117,5 @@ void UCVTexture::UpdateTextureRegions(UTexture2D* Texture, int32 MipIndex, uint3
 				}
 				delete RegionData;
 			});
-	}
-	else
-	{
-		return;
 	}
 }
