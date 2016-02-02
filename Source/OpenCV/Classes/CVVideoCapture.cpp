@@ -42,8 +42,8 @@ bool UCVVideoCapture::UCVVideoCapture::IsOpened()
 
 bool UCVVideoCapture::Capture(UCVMat * UCVMatIn)
 {
-	if (myCVVideoCapture && myCVVideoCapture->isOpened() && UCVMatIn && UCVMatIn->cvMat)
-		return myCVVideoCapture->read(*(UCVMatIn->cvMat));
+	if (myCVVideoCapture && myCVVideoCapture->isOpened() && UCVMatIn)
+		return myCVVideoCapture->read(UCVMatIn->cvMat);
 	else
 		return false;
 }
