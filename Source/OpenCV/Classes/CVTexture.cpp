@@ -4,7 +4,11 @@
 #include "CVTexture.h"
 
 UCVTexture::UCVTexture()
-{}
+{
+	// default texture
+
+	myTexture2D = UTexture2D::CreateTransient(8, 8);
+}
 
 UCVTexture::~UCVTexture()
 {
@@ -25,28 +29,22 @@ void UCVTexture::UpdateResource()
 {
 	if (myTexture2D)
 		myTexture2D->UpdateResource();
-	else
-		return;
 }
 
 void UCVTexture::DataFromCVMat(UCVMat * CVMatIn)
 {
 	if (CVMatIn)
 	{
-		for (int y = 0; y < CVMatIn->myCVMat->rows; y++)
+		for (int y = 0; y < CVMatIn->cvMat.rows; y++)
 		{
-			for (int x = 0; x < CVMatIn->myCVMat->cols; x++)
+			for (int x = 0; x < CVMatIn->cvMat.cols; x++)
 			{
-				int i = x + (y * CVMatIn->myCVMat->cols);
-				Data[i].B = CVMatIn->myCVMat->data[i * 3 + 0];
-				Data[i].G = CVMatIn->myCVMat->data[i * 3 + 1];
-				Data[i].R = CVMatIn->myCVMat->data[i * 3 + 2];
+				int i = x + (y * CVMatIn->cvMat.cols);
+				Data[i].B = CVMatIn->cvMat.data[i * 3 + 0];
+				Data[i].G = CVMatIn->cvMat.data[i * 3 + 1];
+				Data[i].R = CVMatIn->cvMat.data[i * 3 + 2];
 			}
 		}
-	}
-	else
-	{
-		return;
 	}
 }
 
@@ -56,10 +54,12 @@ void UCVTexture::UpdateTexture()
 	{
 		UpdateTextureRegions(myTexture2D, (int32)0, (uint32)3, myUpdateTextureRegion2D, (uint32)(4 * myUpdateTextureRegion2D->Width), (uint32)4, (uint8 *)Data.GetData(), false);
 	}
-	else
-	{
-		return;
-	}
+}
+
+
+UTexture2D * UCVTexture::GetTexture2D()
+{
+	return myTexture2D;
 }
 
 void UCVTexture::UpdateTextureRegions(UTexture2D* Texture, int32 MipIndex, uint32 NumRegions, FUpdateTextureRegion2D* Regions, uint32 SrcPitch, uint32 SrcBpp, uint8* SrcData, bool bFreeData)
@@ -119,17 +119,5 @@ void UCVTexture::UpdateTextureRegions(UTexture2D* Texture, int32 MipIndex, uint3
 	else
 	{
 		return;
-	}
-}
-
-
-UTexture2D * UCVTexture::GetTexture2D()
-{
-	if (myTexture2D) 
-		return myTexture2D;
-	else {
-		// Whoa buddy, let me help you out there.
-		myTexture2D = UTexture2D::CreateTransient(1024, 1024);
-		return myTexture2D;
 	}
 }

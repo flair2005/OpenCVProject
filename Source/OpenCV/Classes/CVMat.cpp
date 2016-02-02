@@ -5,25 +5,15 @@
 
 UCVMat::UCVMat()
 {
-	myCVMat = new cv::Mat();
-}
-
-UCVMat::~UCVMat()
-{
-	delete myCVMat;
+	cvMat = cv::Mat();
 }
 
 void UCVMat::CVMatInfo(int32 &colsOut, int32 &rowsOut, int32 &stepOut, int32 &totalOut, int32 &elemSizeOut, int32 &channelsOut)
 {
-	if (myCVMat)
-	{
-		colsOut = myCVMat->cols;
-		rowsOut = myCVMat->rows;
-		stepOut = myCVMat->step;
-		totalOut = myCVMat->total();
-		elemSizeOut = myCVMat->elemSize();
-		channelsOut = myCVMat->channels();
-	}
-	else
-		return;
+	colsOut = cvMat.cols;
+	rowsOut = cvMat.rows;
+	stepOut = cvMat.step;
+	totalOut = cvMat.total();
+	elemSizeOut = cvMat.elemSize();
+	channelsOut = cvMat.channels();
 }
