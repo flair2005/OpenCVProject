@@ -28,5 +28,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CVVideoCapture")
 		bool Capture(UCVMat * UCVMatIn);
 
-	cv::VideoCapture * myCVVideoCapture;
+	cv::VideoCapture * cvVideoCapture;
 };

@@ -6,33 +6,39 @@
 UCVTexture::UCVTexture()
 {
 	// default texture
-	myTexture2D = UTexture2D::CreateTransient(8, 8);
+	Texture2D = UTexture2D::CreateTransient(8, 8);
 }
 
 UCVTexture::~UCVTexture()
 {
-	if (myUpdateTextureRegion2D) delete myUpdateTextureRegion2D;
+	if (UpdateTextureRegion2D) delete UpdateTextureRegion2D;
 }
 
 void UCVTexture::InitializeTexture(FVector2D TextureSize)
 {
-	myTexture2D = UTexture2D::CreateTransient(TextureSize.X, TextureSize.Y);
+	Texture2D = UTexture2D::CreateTransient(TextureSize.X, TextureSize.Y);
+	Texture2D->UpdateResource();
 
-	if (myUpdateTextureRegion2D) delete myUpdateTextureRegion2D;
-	myUpdateTextureRegion2D = new FUpdateTextureRegion2D(0, 0, 0, 0, TextureSize.X, TextureSize.Y);
+	if (UpdateTextureRegion2D) delete UpdateTextureRegion2D;
+	UpdateTextureRegion2D = new FUpdateTextureRegion2D(0, 0, 0, 0, TextureSize.X, TextureSize.Y);
 
 	Data.Init(FColor(0, 0, 0, 255), TextureSize.X * TextureSize.Y);
 }
 
-void UCVTexture::UpdateResource()
+bool UCVTexture::UpdateResource()
 {
-	if (myTexture2D)
-		myTexture2D->UpdateResource();
+	if (Texture2D)
+	{
+		Texture2D->UpdateResource();
+		return true;
+	}
+	else
+		return false;
 }
 
-void UCVTexture::DataFromCVMat(UCVMat * CVMatIn)
+bool UCVTexture::DataFromCVMat(UCVMat * CVMatIn)
 {
-	if (CVMatIn)
+	if (CVMatIn && CVMatIn->cvMat.data)
 	{
 		for (int y = 0; y < CVMatIn->cvMat.rows; y++)
 		{
@@ -44,24 +50,30 @@ void UCVTexture::DataFromCVMat(UCVMat * CVMatIn)
 				Data[i].R = CVMatIn->cvMat.data[i * 3 + 2];
 			}
 		}
+		return true;
 	}
+	else
+		return false;
 }
 
-void UCVTexture::UpdateTexture()
+bool UCVTexture::UpdateTexture()
 {
 	if (
-		myTexture2D &&
-		myUpdateTextureRegion2D &&
-		((uint32)Data.Num() >= myUpdateTextureRegion2D->Width * myUpdateTextureRegion2D->Height)
+		Texture2D &&
+		UpdateTextureRegion2D &&
+		((uint32)Data.Num() >= UpdateTextureRegion2D->Width * UpdateTextureRegion2D->Height)
 		)
 	{
-		UpdateTextureRegions(myTexture2D, (int32)0, (uint32)3, myUpdateTextureRegion2D, (uint32)(4 * myUpdateTextureRegion2D->Width), (uint32)4, (uint8 *)Data.GetData(), false);
+		UpdateTextureRegions(Texture2D, (int32)0, (uint32)3, UpdateTextureRegion2D, (uint32)(4 * UpdateTextureRegion2D->Width), (uint32)4, (uint8 *)Data.GetData(), false);
+		return true;
 	}
+	else
+		return false;
 }
 
 UTexture2D * UCVTexture::GetTexture2D()
 {
-	return myTexture2D;
+	return Texture2D;
 }
 
 void UCVTexture::UpdateTextureRegions(UTexture2D* Texture, int32 MipIndex, uint32 NumRegions, FUpdateTextureRegion2D* Regions, uint32 SrcPitch, uint32 SrcBpp, uint8* SrcData, bool bFreeData)

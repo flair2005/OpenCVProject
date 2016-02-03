@@ -7,24 +7,24 @@ UCVVideoCapture::UCVVideoCapture()
 {
 	// using new/delete caused crashes... ?
 	//cvVideoCapturePointer = new cv::VideoCapture();
-	myCVVideoCapture = static_cast<cv::VideoCapture *>(FMemory::Malloc(sizeof(cv::VideoCapture)));
+	cvVideoCapture = static_cast<cv::VideoCapture *>(FMemory::Malloc(sizeof(cv::VideoCapture)));
 	// manually construct the cv::VideoCapture 
-	new (myCVVideoCapture) cv::VideoCapture();
+	new (cvVideoCapture) cv::VideoCapture();
 
 }
 
 UCVVideoCapture::~UCVVideoCapture()
 {
 	// manually destruct the cv::VideoCapture
-	myCVVideoCapture->~VideoCapture();
-	FMemory::Free(myCVVideoCapture);
+	cvVideoCapture->~VideoCapture();
+	FMemory::Free(cvVideoCapture);
 }
 
 bool UCVVideoCapture::OpenCam(int32 CameraID)
 {
-	if (myCVVideoCapture)
+	if (cvVideoCapture)
 	{
-		return myCVVideoCapture->open(CameraID);
+		return cvVideoCapture->open(CameraID);
 	}
 	else
 	{
@@ -34,16 +34,16 @@ bool UCVVideoCapture::OpenCam(int32 CameraID)
 
 bool UCVVideoCapture::UCVVideoCapture::IsOpened()
 {
-	if (myCVVideoCapture)
-		return myCVVideoCapture->isOpened();
+	if (cvVideoCapture)
+		return cvVideoCapture->isOpened();
 	else
 		return false;
 }
 
-bool UCVVideoCapture::Capture(UCVMat * UCVMatIn)
+bool UCVVideoCapture::Capture(UCVMat * UCVMat)
 {
-	if (myCVVideoCapture && myCVVideoCapture->isOpened() && UCVMatIn)
-		return myCVVideoCapture->read(UCVMatIn->cvMat);
+	if (cvVideoCapture && cvVideoCapture->isOpened() && UCVMat)
+		return cvVideoCapture->read(UCVMat->cvMat);
 	else
 		return false;
 }

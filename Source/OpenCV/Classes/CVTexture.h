@@ -23,13 +23,13 @@ public:
 		void InitializeTexture(FVector2D TextureSize);
 	
 	UFUNCTION(BlueprintCallable, Category = "CVTexture")
-		void UpdateResource();
+		bool UpdateResource();
 
 	UFUNCTION(BlueprintCallable, Category = "CVTexture")
-		void DataFromCVMat(UCVMat * CVMatIn);
+		bool DataFromCVMat(UCVMat * CVMatIn);
 
 	UFUNCTION(BlueprintCallable, Category = "CVTexture")
-		void UpdateTexture();
+		bool UpdateTexture();
 	
 	void UCVTexture::UpdateTextureRegions(UTexture2D* Texture, int32 MipIndex, uint32 NumRegions, FUpdateTextureRegion2D* Regions, uint32 SrcPitch, uint32 SrcBpp, uint8* SrcData, bool bFreeData);
 
@@ -37,6 +37,6 @@ public:
 		UTexture2D * GetTexture2D();
 
 	TArray<FColor> Data;
-	UTexture2D * myTexture2D;
-	FUpdateTextureRegion2D * myUpdateTextureRegion2D;
+	UTexture2D * Texture2D;
+	FUpdateTextureRegion2D * UpdateTextureRegion2D;
 };
