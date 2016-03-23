@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// All Rights Reserved Benjamin David Andersen (SteamyThePunk) 2016
 
 using UnrealBuildTool;
 

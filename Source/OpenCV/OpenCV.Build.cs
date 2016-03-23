@@ -1,3 +1,7 @@
+// All Rights Reserved Benjamin David Andersen (SteamyThePunk) 2016
+// Based on https://wiki.unrealengine.com/Integrating_OpenCV_Into_Unreal_Engine_4
+
+
 using UnrealBuildTool;
 using System.IO;
 
