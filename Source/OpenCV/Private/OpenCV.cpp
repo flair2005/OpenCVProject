@@ -1,4 +1,4 @@
-#include "OpenCVPrivatePCH.h"
+#include "OpenCV.h"
 
 #define LOCTEXT_NAMESPACE "FOpenCVModule"
 
