@@ -1,4 +1,4 @@
-// All Rights Reserved Benjamin David Andersen (SteamyThePunk) 2016
+// Released under the Creative Commons Alexis Andersen 2017
 
 #include "OpenCV.h"
 #include "OpenCVBPLibrary.h"
